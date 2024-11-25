@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "noLib": true,
+    "noEmit": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "incremental": true,
+    "noImplicitAny": true,
+    "typeRoots": [
+      "node_modules/@wshcmx/types/lib",
+      "node_modules/@wshcmx/types/lib/xml"
+    ]
+  },
+  "include": [
+    "src/*"
+  ]
+}
