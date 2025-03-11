@@ -4,7 +4,7 @@ function json<T>(
   res: Response,
   payload: T,
   status = 200,
-  message: string = null
+  message: string = ""
 ) {
   res.ContentType = "application/json; charset=utf-8;";
 
@@ -57,6 +57,14 @@ export function unprocessableContent(res: Response, message: string) {
 }
 
 export function binary(res: Response, file: ResourceDocument) {
+  if (file.TopElem.file_source.Value === null) {
+    throw new Error("Файловый источник не указан");
+  }
+
+  if (file.TopElem.file_url.Value === null) {
+    throw new Error("URL файла не указан");
+  }
+
   const binary = new Binary();
   const url = tools.file_source_get_file_to_save_url(
     file.TopElem.file_source.Value,
