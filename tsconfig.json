@@ -6,6 +6,11 @@
     "outDir": "dist",
     "incremental": true,
     "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
     "typeRoots": [
       "node_modules/@wshcmx/types/lib",
       "node_modules/@wshcmx/types/lib/xml"
