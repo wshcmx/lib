@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
+    "target": "ES5",
+    "module": "Preserve",
     "noLib": true,
-    "noEmit": true,
     "rootDir": "src",
     "outDir": "dist",
-    "incremental": true,
+    "declaration": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "noImplicitThis": true,
-    "alwaysStrict": true,
     "typeRoots": [
       "node_modules/@wshcmx/types/lib",
       "node_modules/@wshcmx/types/lib/xml"
