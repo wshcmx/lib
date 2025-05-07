@@ -24,7 +24,11 @@ export function isError(value: unknown): value is Error {
  * @returns { boolean }
  */
 export function isNull(v: unknown): v is undefined | null | "" {
-  return isObject(v) || isArray(v) ? false : (v === undefined || v === null || StrCharCount(v as string) === 0);
+  if (isObject(v) || isArray(v) || isXmlDocument(v)) {
+    return false;
+  }
+
+  return (v === undefined || v === null || StrCharCount(v as string) === 0);
 }
 
 export function isNumber(value: unknown): value is number {
@@ -37,6 +41,7 @@ export function isObject(value: unknown): value is object {
 
 export function isPrimitive(value: unknown): value is (number | boolean | string | undefined | null) {
   const type = DataType(value);
+
   return (
     type == "integer"
     || type == "float"
@@ -57,4 +62,8 @@ export function isString(value: unknown): value is string {
 
 export function isUndef(value: unknown): value is null | undefined {
   return value === undefined || value === null;
+}
+
+export function isXmlDocument(value: unknown): value is XmlDocument {
+  return ObjectType(value) == "XmlDocument";
 }
