@@ -2,8 +2,12 @@
   "name": "@wshcmx/lib",
   "version": "1.1.0",
   "type": "module",
+  "scripts": {
+    "build": "wshcmx build --include-non-ts-files",
+    "start": "wshcmx watch --include-non-ts-files"
+  },
   "dependencies": {
-    "@wshcmx/types": "^11.0.9"
+    "@wshcmx/types": "github:wshcmx/types"
   },
   "devDependencies": {
     "@wshcmx/cli": "^2.0.4",
