@@ -1,7 +1,8 @@
 {
   "name": "@wshcmx/lib",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
+  "main": "dist",
   "scripts": {
     "build": "wshcmx build --include-non-ts-files",
     "start": "wshcmx watch --include-non-ts-files"
