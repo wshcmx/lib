@@ -4,7 +4,7 @@
     try {
       alert('Registering wshcmx libraries');
       RegisterCodeLibrary('./index.bs');
-      wshcmx.init();
+      wshcmx.Init();
       alert('wshcmx libraries successfully registered');
     } catch (error) {
       alert('wshcmx libraries registration fail. ' + error);

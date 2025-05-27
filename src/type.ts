@@ -14,21 +14,25 @@ export function isDate(value: unknown): value is Date {
   return DataType(value) == "date" || OptDate(value) !== undefined;
 }
 
-export function isError(value: unknown): value is Error {
-  return ObjectType(value) == "BmErrorInfo";
-}
-
 /**
  * Проверяет равна ли функция `null`, `undefined` или ``.
- * @param { any } value Проверяемое значение.
+ * @param { unknown } value Проверяемое значение.
  * @returns { boolean }
  */
-export function isNull(v: unknown): v is undefined | null | "" {
+export function isEmpty(v: unknown): v is undefined | null | "" {
   if (isObject(v) || isArray(v) || isXmlDocument(v)) {
     return false;
   }
 
   return (v === undefined || v === null || StrCharCount(v as string) === 0);
+}
+
+export function isError(value: unknown): value is Error {
+  return ObjectType(value) == "BmErrorInfo";
+}
+
+export function isNull(v: unknown): v is null {
+  return v === null;
 }
 
 export function isNumber(value: unknown): value is number {
