@@ -7,7 +7,8 @@
     "start": "wshcmx watch --include-non-ts-files"
   },
   "dependencies": {
-    "@wshcmx/types": "github:wshcmx/types"
+    "@wshcmx/net": "^1.1.0",
+    "@wshcmx/types": "^11.1.0"
   },
   "devDependencies": {
     "@wshcmx/cli": "^2.0.4",
