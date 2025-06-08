@@ -35,6 +35,10 @@ export function isNull(v: unknown): v is null {
   return v === null;
 }
 
+export function isUndefined(v: unknown): v is null {
+  return v === undefined;
+}
+
 export function isNumber(value: unknown): value is number {
   return DataType(value) == "integer";
 }
