@@ -52,7 +52,7 @@ export namespace wshcmx {
 
   function initWshcmxNet() {
     try {
-      net = tools.dotnet_host?.Object.GetAssembly("wshcmx.dll")
+      net = tools.dotnet_host?.Object.GetAssembly("wshcmx.dll");
     } catch (error) {
       log.error(`Failed to load wshcmx.dll:\n${error}`);
     }
