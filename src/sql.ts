@@ -32,7 +32,7 @@ export function string(v: unknown) {
 }
 
 export function executeNonQuery<T>(query: string) {
-  wshcmx.exception.throwIfNull(wshcmx.net, "wshcmx.net");
+  wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Sql>("wshcmx.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
@@ -42,7 +42,7 @@ export function executeNonQuery<T>(query: string) {
 }
 
 export function executePaginationProcedure<T>(query: string, options: PaginationProcedureOptions = {}, parameters: Record<string, unknown> = {}) {
-  wshcmx.exception.throwIfNull(wshcmx.net, "wshcmx.net");
+  wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Sql>("wshcmx.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
@@ -74,7 +74,7 @@ export function executePaginationProcedure<T>(query: string, options: Pagination
 }
 
 export function executeProcedure<T>(query: string, parameters: Record<string, unknown> = {}) {
-  wshcmx.exception.throwIfNull(wshcmx.net, "wshcmx.net");
+  wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Sql>("wshcmx.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
@@ -103,7 +103,7 @@ export function executeProcedure<T>(query: string, parameters: Record<string, un
 }
 
 export function executeQuery<T>(query: string) {
-  wshcmx.exception.throwIfNull(wshcmx.net, "wshcmx.net");
+  wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Sql>("wshcmx.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
