@@ -3,6 +3,7 @@
 export namespace wshcmx {
   export let IS_DOCKER: boolean = false;
   export let connectionString: string = "";
+  export let dbType: string = "";
 
   // Библиотеки
   export let exception: typeof import("./exception");
@@ -36,6 +37,8 @@ export namespace wshcmx {
     if (tools_web.is_true(AppConfig.GetOptProperty("TRUST_SQL_SERVER_CERTIFICATE"))) {
       connectionString += ";TrustServerCertificate=True;";
     }
+
+    dbType = StrLowerCase(tools.spxml_unibridge.Object.provider.GetProviderConfigValue("DBType"));
 
     IS_DOCKER = tools_web.is_true(AppConfig.GetOptProperty("IS_DOCKER"));
   }
