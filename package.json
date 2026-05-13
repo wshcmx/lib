@@ -1,17 +1,19 @@
 {
   "name": "@wshcmx/lib",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "type": "module",
   "scripts": {
-    "build": "wshcmx build --include-non-ts-files && cp * dist/",
-    "start": "wshcmx watch --include-non-ts-files"
+    "build": "node build/make.ts --build",
+    "start": "node build/make.ts --watch",
+    "publish": "npm run build && node build/make.ts --publish"
   },
   "dependencies": {
     "@wshcmx/net": "^1.1.0",
-    "@wshcmx/types": "^11.1.0"
+    "@wshcmx/types": "^12.1.0"
   },
   "devDependencies": {
-    "@wshcmx/cli": "^2.0.4",
-    "typescript": "^5.8.3"
+    "@types/node": "^25.7.0",
+    "@wshcmx/cli": "^2.1.0",
+    "typescript": "^6.0.3"
   }
 }
