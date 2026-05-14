@@ -8,13 +8,13 @@
     "publish": "npm run build && node build/make.ts --publish"
   },
   "dependencies": {
-    "@wshcmx/net": "^1.1.0",
-    "@wshcmx/types": "^12.1.0"
+    "@wshcmx/net": "^1.1.0"
   },
   "devDependencies": {
     "@types/decompress": "^4.2.7",
     "@types/node": "^25.7.0",
-    "@wshcmx/cli": "^2.1.0",
+    "@wshcmx/cli": "^3.0.0",
+    "@wshcmx/types": "^12.1.0",
     "decompress": "^4.2.1",
     "tar": "^7.5.15",
     "typescript": "^6.0.3"

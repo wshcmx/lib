@@ -10,13 +10,11 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
-    "noImplicitThis": true,
-    "typeRoots": [
-      "../node_modules/@wshcmx/types/lib",
-      "../node_modules/@wshcmx/types/lib/xml"
-    ]
+    "noImplicitThis": true
   },
   "include": [
-    "*.ts"
+    "*.ts",
+    "*.d.ts",
+    "../node_modules/@wshcmx/types/lib/**/*.d.ts"
   ]
 }

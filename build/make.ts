@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { parseArgs } from "node:util";
 
@@ -61,16 +61,6 @@ async function buildProject() {
     for (const file of STATIC_FILES) {
         cpSync(resolve(PROJECT_ROOT_PATH, file), resolve(DIST_PATH, file), { force: true });
     }
-
-    renameSync(resolve(PROJECT_ROOT_PATH, 'node_modules'), resolve(DIST_PATH, 'node_modules'));
-}
-
-function watchProject() {
-    execSync(`wshcmx watch --include-non-ts-files`, { stdio: "inherit", cwd: PROJECT_SRC_PATH });
-}
-
-function publishProject() {
-    execSync(`npm publish`, { stdio: "inherit", cwd: PROJECT_SRC_PATH });
 }
 
 if (args.clean) {
@@ -81,10 +71,10 @@ if (args.clean) {
    buildProject();
 } else if (args.watch) {
     console.log("👀 Watching for changes...");
-    watchProject()
+    execSync(`wshcmx watch --include-non-ts-files`, { stdio: "inherit", cwd: PROJECT_SRC_PATH });
 } else if (args.publish) {
     console.log("🚀 Publishing the project...");
-    publishProject();
+    execSync(`npm publish`, { stdio: "inherit", cwd: PROJECT_SRC_PATH });
 } else {
     console.log("❌ No valid options provided. Use --build, --watch, or --publish.");
 }
