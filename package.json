@@ -8,8 +8,7 @@
   },
   "scripts": {
     "build": "node build/make.ts build",
-    "start": "node build/make.ts watch",
-    "publish": "npm run build && node build/make.ts publish"
+    "start": "node build/make.ts watch"
   },
   "dependencies": {
     "@wshcmx/net": "^2.2.0"

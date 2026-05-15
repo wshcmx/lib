@@ -85,9 +85,6 @@ if (commands[0] == "build") {
     console.log("👀 Watching for changes...");
     buildProject();
     execSync(`wshcmx watch --include-non-ts-files`, { stdio: "inherit", cwd: PROJECT_SRC_PATH });
-} else if (commands[0] == "publish") {
-    console.log("🚀 Publishing the project...");
-    execSync(`npm publish`, { stdio: "inherit", cwd: PROJECT_SRC_PATH });
 } else {
     console.log("❌ No valid options provided. Use --build, --watch, or --publish.");
 }
