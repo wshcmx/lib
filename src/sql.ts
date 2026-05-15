@@ -1,5 +1,5 @@
-import { wshcmxnet } from "@wshcmx/net";
 import { wshcmx } from ".";
+import { wshcmx as wshcmxnet } from "@wshcmx/net";
 
 type PaginationProcedureOptions = {
   page?: number;
@@ -31,9 +31,9 @@ export function string(v: unknown) {
   return SqlLiteral(tools_web.convert_xss(String(v)));
 }
 
-export function executeNonQuery<T>(query: string) {
+export function executeNonQuery(query: string) {
   wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
-  const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Sql>("wshcmx.Sql");
+  const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Net.Sql>("wshcmx.Net.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
   sqlInstance.Init(wshcmx.connectionString);
@@ -43,12 +43,12 @@ export function executeNonQuery<T>(query: string) {
 
 export function executePaginationProcedure<T>(query: string, options: PaginationProcedureOptions = {}, parameters: Record<string, unknown> = {}) {
   wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
-  const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Sql>("wshcmx.Sql");
+  const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Net.Sql>("wshcmx.Net.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
   sqlInstance.Init(wshcmx.connectionString);
 
-  const queryResult = sqlInstance.ExecutePaginationProcedure(query, EncodeJson(options), EncodeJson(parameters)) as [number, wshcmxnet.KeyValuePair<string, unknown>[][]];
+  const queryResult = sqlInstance.ExecutePaginationProcedure(query, EncodeJson(options), EncodeJson(parameters)) as [number, wshcmxnet.Net.KeyValuePair<string, unknown>[][]];
 
   let pairs;
   let i;
@@ -75,12 +75,12 @@ export function executePaginationProcedure<T>(query: string, options: Pagination
 
 export function executeProcedure<T>(query: string, parameters: Record<string, unknown> = {}) {
   wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
-  const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Sql>("wshcmx.Sql");
+  const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Net.Sql>("wshcmx.Net.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
   sqlInstance.Init(wshcmx.connectionString);
 
-  const queryResult = sqlInstance.ExecuteProcedure(query, EncodeJson(parameters)) as wshcmxnet.KeyValuePair<string, unknown>[][];
+  const queryResult = sqlInstance.ExecuteProcedure(query, EncodeJson(parameters)) as wshcmxnet.Net.KeyValuePair<string, unknown>[][];
 
   let pairs;
   let i;
@@ -104,7 +104,7 @@ export function executeProcedure<T>(query: string, parameters: Record<string, un
 
 export function executeQuery<T>(query: string) {
   wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
-  const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Sql>("wshcmx.Sql");
+  const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Net.Sql>("wshcmx.Net.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
   sqlInstance.Init(wshcmx.connectionString);

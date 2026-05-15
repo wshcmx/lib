@@ -1,22 +1,24 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es5",
     "module": "Preserve",
     "noLib": true,
     "rootDir": ".",
     "outDir": "../dist",
     "declaration": true,
     "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnusedLabels": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "noImplicitThis": true,
-    "typeRoots": [
-      "../node_modules/@wshcmx/types/lib",
-      "../node_modules/@wshcmx/types/lib/xml"
-    ]
+    "ignoreDeprecations": "6.0"
   },
   "include": [
-    "*.ts"
+    "*.ts",
+    "*.d.ts",
+    "../node_modules/@wshcmx/types/lib/**/*.d.ts"
   ]
 }
