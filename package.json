@@ -3,9 +3,9 @@
   "version": "1.4.0",
   "type": "module",
   "scripts": {
-    "build": "node build/make.ts --build",
-    "start": "node build/make.ts --watch",
-    "publish": "npm run build && node build/make.ts --publish"
+    "build": "node build/make.ts build",
+    "start": "node build/make.ts watch",
+    "publish": "npm run build && node build/make.ts publish"
   },
   "dependencies": {
     "@wshcmx/net": "^1.1.0"

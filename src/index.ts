@@ -8,6 +8,7 @@ export namespace wshcmx {
   export let exception: typeof import("./exception");
   export let log: typeof import("./log");
   export let object: typeof import("./object");
+  export let process: typeof import("./process");
   export let response: typeof import("./response");
   export let string: typeof import("./string");
   export let sql: typeof import("./sql");
@@ -44,6 +45,7 @@ export namespace wshcmx {
     exception = OpenCodeLib("./exception.js");
     log = OpenCodeLib("./log.js");
     object = OpenCodeLib("./object.js");
+    process = OpenCodeLib("./process.js");
     response = OpenCodeLib("./response.js");
     string = OpenCodeLib("./string.js");
     sql = OpenCodeLib("./sql.js");
