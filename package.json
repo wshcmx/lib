@@ -2,6 +2,10 @@
   "name": "@wshcmx/lib",
   "version": "2.0.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wshcmx/lib.git"
+  },
   "scripts": {
     "build": "node build/make.ts build",
     "start": "node build/make.ts watch",
