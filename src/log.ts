@@ -56,13 +56,7 @@ export function write(message: unknown, type: string = "INFO", logCode: string =
     message = tools.object_to_text(message, "json");
   }
 
-  message = `[${StrUpperCase(type)}] ${message}`;
-
-  const colorIndex = wshcmx.LOG_COLORS.GetOptProperty(type);
-
-  if (wshcmx.ADD_COLOR_TO_LOG && colorIndex !== undefined) {
-    message = `\u001B[${colorIndex}m${message}\u001B[${wshcmx.LOG_COLORS.RESET}m`;
-  }
+  message = `[wshcmx] [${StrUpperCase(type)}] ${message}`;
 
   LogEvent(logCode, message as string);
 

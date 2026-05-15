@@ -2,7 +2,7 @@
 
 export namespace wshcmx {
   export let IS_DOCKER: boolean = false;
-  export let connectionString: string = "";
+  export let connectionString: string
 
   // Библиотеки
   export let exception: typeof import("./exception");
@@ -18,12 +18,6 @@ export namespace wshcmx {
   // Конфиг
   export let ADD_COLOR_TO_LOG = true;
   export let DUPLICATE_TO_XHTTP_LOG = false;
-  export const LOG_COLORS: { [key: string]: string } = {
-    "RESET": "0",
-    "ERROR": "31",
-    "VERBOSE": "34",
-    "WARNING": "33",
-  };
 
   export function Init() {
     initEnvironment();
@@ -33,10 +27,10 @@ export namespace wshcmx {
 
   function initEnvironment() {
     try {
-    connectionString = tools.spxml_unibridge.Object.provider.GetProviderConfigValue("NoMarsConnectionString");
+      connectionString = tools.spxml_unibridge.Object.provider.GetProviderConfigValue("NoMarsConnectionString");
 
-    if (tools_web.is_true(AppConfig.GetOptProperty("TRUST_SQL_SERVER_CERTIFICATE"))) {
-      connectionString += ";TrustServerCertificate=True;";
+      if (tools_web.is_true(AppConfig.GetOptProperty("TRUST_SQL_SERVER_CERTIFICATE"))) {
+        connectionString += ";TrustServerCertificate=True;";
       }
     } catch (error) {
       alert(`[wshcmx] [error] Failed to get connection string from provider config:\n${error}`);

@@ -8,7 +8,7 @@
     "publish": "npm run build && node build/make.ts publish"
   },
   "dependencies": {
-    "@wshcmx/net": "^1.1.0"
+    "@wshcmx/net": "^2.2.0"
   },
   "devDependencies": {
     "@types/decompress": "^4.2.7",
