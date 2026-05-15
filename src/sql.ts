@@ -31,7 +31,7 @@ export function string(v: unknown) {
   return SqlLiteral(tools_web.convert_xss(String(v)));
 }
 
-export function executeNonQuery<T>(query: string) {
+export function executeNonQuery(query: string) {
   wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Sql>("wshcmx.Net.Sql");
 
