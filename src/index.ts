@@ -32,10 +32,14 @@ export namespace wshcmx {
   }
 
   function initEnvironment() {
+    try {
     connectionString = tools.spxml_unibridge.Object.provider.GetProviderConfigValue("NoMarsConnectionString");
 
     if (tools_web.is_true(AppConfig.GetOptProperty("TRUST_SQL_SERVER_CERTIFICATE"))) {
       connectionString += ";TrustServerCertificate=True;";
+      }
+    } catch (error) {
+      alert(`[wshcmx] [error] Failed to get connection string from provider config:\n${error}`);
     }
 
     IS_DOCKER = tools_web.is_true(AppConfig.GetOptProperty("IS_DOCKER"));

@@ -66,7 +66,7 @@ async function downloadLatestWshcmxVersion() {
 }
 
 async function buildProject() {
-    console.log("🏗️ Building the project...");
+    console.log("🏗️  Building the project...");
     await downloadLatestWshcmxVersion();
     execSync(`wshcmx build --include-non-ts-files`, { stdio: "inherit", cwd: PROJECT_SRC_PATH });
 
