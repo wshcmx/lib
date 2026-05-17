@@ -20,7 +20,7 @@ export interface IProcessResult {
 export function execute(cmd: string, args: string[]): IProcessResult {
     wshcmx.log.verbose("Выполнение процесса...");
 
-    const result = wshcmx.net?.CallClassStaticMethod<ReturnType<wschmxnet.Net.ProcessHelper["Execute"]>>("wshcmx.Net.ProcessHelper", "Execute", [cmd, args.join(" ")]);
+    const result = wshcmx.net?.CallClassStaticMethod<ReturnType<wschmxnet.Net.ProcessExecutor["Execute"]>>("wshcmx.Net.ProcessHelper", "Execute", [cmd, args.join(" ")]);
 
     if (result === undefined) {
         wshcmx.log.error("Ошибка выполнения процесса: wshcmx.net не определен.");

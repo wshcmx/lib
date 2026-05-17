@@ -107,7 +107,7 @@ export function executeQuery<T>(query: string) {
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Net.Sql>("wshcmx.Net.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
-  sqlInstance.Init(wshcmx.connectionString);
+  sqlInstance.Init(wshcmx.connectionString, wshcmx.DATABASE_TYPE);
 
   const queryResult = sqlInstance.ExecuteQuery(query);
 

@@ -2,6 +2,12 @@
 
 export namespace wshcmx {
   export let IS_DOCKER: boolean = false;
+  /**
+   * Тип базы данных: 0 - SQL Server, 1 - PostgreSQL.
+   * Используется для правильной обработки типов данных при работе с базой данных.
+   * @default 0
+   */
+  export let DATABASE_TYPE: 1 | 0 = 0;
   export let connectionString: string
 
   // Библиотеки
@@ -32,6 +38,8 @@ export namespace wshcmx {
       if (tools_web.is_true(AppConfig.GetOptProperty("TRUST_SQL_SERVER_CERTIFICATE"))) {
         connectionString += ";TrustServerCertificate=True;";
       }
+
+      DATABASE_TYPE = getDatabaseType();
     } catch (error) {
       alert(`[wshcmx] [error] Failed to get connection string from provider config:\n${error}`);
     }
@@ -56,5 +64,15 @@ export namespace wshcmx {
     } catch (error) {
       log.error(`Failed to load wshcmx.dll:\n${error}`);
     }
+  }
+
+  function getDatabaseType() {
+    const DBTypeLowercased = StrLowerCase(tools.spxml_unibridge.Object.provider.GetProviderConfigValue("DBType"));
+
+    if (DBTypeLowercased == "postgresql" || DBTypeLowercased == "postgres") {
+      return 1;
+    }
+
+    return 0;
   }
 }

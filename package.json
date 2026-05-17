@@ -1,6 +1,6 @@
 {
   "name": "@wshcmx/lib",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "type": "module",
   "repository": {
     "type": "git",
@@ -11,7 +11,7 @@
     "start": "node build/make.ts watch"
   },
   "dependencies": {
-    "@wshcmx/net": "^2.2.0"
+    "@wshcmx/net": "^2.4.0"
   },
   "devDependencies": {
     "@types/decompress": "^4.2.7",
