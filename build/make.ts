@@ -3,8 +3,6 @@ import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { parse, resolve } from "node:path";
 import { parseArgs } from "node:util";
 
-import decompress from 'decompress';
-
 const { values: args, positionals: commands } = parseArgs({
   options: {
     clean: { type: "boolean", default: false, short: "c" }
@@ -62,7 +60,8 @@ async function downloadLatestWshcmxVersion() {
     const netPackagePath = resolve(CACHE_PATH, `wshcmx-net-${latestRelease.tag_name}.tgz`);
     mkdirSync(CACHE_PATH, { recursive: true });
     writeFileSync(netPackagePath, Buffer.from(netPackage));
-    await decompress(netPackagePath, resolve(DIST_PATH, 'net'));
+    mkdirSync(resolve(DIST_PATH, 'net'), { recursive: true });
+    execSync(`tar -xzf ${netPackagePath} -C ${DIST_PATH}/net`, { stdio: "inherit" });
 }
 
 async function buildProject() {
