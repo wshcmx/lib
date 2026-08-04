@@ -1,4 +1,4 @@
-import { execSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { parse, resolve } from "node:path";
 import { parseArgs } from "node:util";
@@ -26,6 +26,31 @@ function cleanDist() {
     rmSync(DIST_PATH, { recursive: true, force: true });
 }
 
+function extractArchive(archivePath: string, destinationPath: string) {
+    const normalizedArchivePath = archivePath.toLowerCase();
+
+    if (normalizedArchivePath.endsWith(".tar.gz") || normalizedArchivePath.endsWith(".tgz")) {
+        execFileSync("tar", ["-xzf", archivePath, "-C", destinationPath], { stdio: "inherit" });
+        return;
+    }
+
+    if (normalizedArchivePath.endsWith(".tar")) {
+        execFileSync("tar", ["-xf", archivePath, "-C", destinationPath], { stdio: "inherit" });
+        return;
+    }
+
+    if (normalizedArchivePath.endsWith(".zip")) {
+        if (process.platform === "win32") {
+            execFileSync("powershell", ["-NoProfile", "-Command", `Expand-Archive -Path '${archivePath}' -DestinationPath '${destinationPath}' -Force`], { stdio: "inherit" });
+        } else {
+            execFileSync("unzip", ["-q", archivePath, "-d", destinationPath], { stdio: "inherit" });
+        }
+        return;
+    }
+
+    throw new Error(`❌ Unsupported archive format: ${archivePath}`);
+}
+
 async function downloadLatestWshcmxVersion() {
     if (existsSync(resolve(DIST_PATH, 'net'))) {
         console.log("⏩ Latest wshcmx/net package already exists in dist. Skipping download.");
@@ -50,18 +75,26 @@ async function downloadLatestWshcmxVersion() {
     }
 
     const { assets } = latestRelease;
+    const releaseAsset = assets.find((asset: { name?: string }) => /\.(tar\.gz|tgz|tar|zip)$/i.test(asset.name ?? "")) ?? assets[0];
+
+    if (!releaseAsset?.browser_download_url) {
+        throw new Error("❌ Could not find a downloadable wshcmx/net package asset in the latest release.");
+    }
+
     console.log(`📦 Fetching the ${latestRelease.tag_name} wshcmx/net package from GitHub...`);
-    const netPackage = await (await fetch(assets[0].browser_download_url)).arrayBuffer();
+    const netPackage = await (await fetch(releaseAsset.browser_download_url)).arrayBuffer();
 
     if (!netPackage) {
         throw new Error("❌ Could not fetch the latest wshcmx/net package. Please ensure you have the latest version of wshcmx installed.");
     }
 
-    const netPackagePath = resolve(CACHE_PATH, `wshcmx-net-${latestRelease.tag_name}.tgz`);
+    const assetName = releaseAsset.name ?? `wshcmx-net-${latestRelease.tag_name}.tgz`;
+    const archiveExtension = assetName.match(/\.(tar\.gz|tgz|tar|zip)$/i)?.[0] ?? ".tgz";
+    const netPackagePath = resolve(CACHE_PATH, `wshcmx-net-${latestRelease.tag_name}${archiveExtension}`);
     mkdirSync(CACHE_PATH, { recursive: true });
     writeFileSync(netPackagePath, Buffer.from(netPackage));
     mkdirSync(resolve(DIST_PATH, 'net'), { recursive: true });
-    execSync(`tar -xzf ${netPackagePath} -C ${DIST_PATH}/net`, { stdio: "inherit" });
+    extractArchive(netPackagePath, resolve(DIST_PATH, 'net'));
 }
 
 async function buildProject() {
