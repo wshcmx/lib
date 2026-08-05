@@ -36,7 +36,7 @@ export function executeNonQuery(query: string) {
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Net.Sql>("wshcmx.Net.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
-  sqlInstance.Init(wshcmx.connectionString);
+  sqlInstance.Init(wshcmx.connectionString, wshcmx.DATABASE_TYPE);
 
   sqlInstance.ExecuteNonQuery(query);
 }
@@ -46,7 +46,7 @@ export function executePaginationProcedure<T>(query: string, options: Pagination
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Net.Sql>("wshcmx.Net.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
-  sqlInstance.Init(wshcmx.connectionString);
+  sqlInstance.Init(wshcmx.connectionString, wshcmx.DATABASE_TYPE);
 
   const queryResult = sqlInstance.ExecutePaginationProcedure(query, EncodeJson(options), EncodeJson(parameters)) as [number, wshcmxnet.Net.KeyValuePair<string, unknown>[][]];
 
@@ -78,7 +78,7 @@ export function executeProcedure<T>(query: string, parameters: Record<string, un
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Net.Sql>("wshcmx.Net.Sql");
 
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
-  sqlInstance.Init(wshcmx.connectionString);
+  sqlInstance.Init(wshcmx.connectionString, wshcmx.DATABASE_TYPE);
 
   const queryResult = sqlInstance.ExecuteProcedure(query, EncodeJson(parameters)) as wshcmxnet.Net.KeyValuePair<string, unknown>[][];
 
