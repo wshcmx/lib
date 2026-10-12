@@ -8,27 +8,12 @@ type PaginationProcedureOptions = {
   orderby?: string;
 };
 
-export function number(v: unknown) {
-  const real = OptReal(v, "NULL");
-  const int = OptInt(v, "NULL");
-
-  if (real !== int) {
-    return real;
-  }
-
-  return int;
-}
-
-export function date(v: unknown) {
-  return SqlLiteral(OptDate(v, "NULL"));
-}
-
 export function boolean(v: unknown) {
   return tools_web.is_true(v) ? 1 : 0;
 }
 
-export function string(v: unknown) {
-  return SqlLiteral(tools_web.convert_xss(String(v)));
+export function date(v: unknown) {
+  return SqlLiteral(OptDate(v, "NULL"));
 }
 
 export function executeNonQuery(query: string) {
@@ -48,7 +33,7 @@ export function executePaginationProcedure<T>(query: string, options: Pagination
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
   sqlInstance.Init(wshcmx.connectionString);
 
-  const queryResult = sqlInstance.ExecutePaginationProcedure(query, EncodeJson(options), EncodeJson(parameters)) as [number, wshcmxnet.Net.KeyValuePair<string, unknown>[][]];
+  const queryResult = sqlInstance.ExecutePaginationProcedure(query, EncodeJson(options), EncodeJson(convertParameters(parameters))) as [number, wshcmxnet.Net.KeyValuePair<string, unknown>[][]];
 
   let pairs;
   let i;
@@ -80,7 +65,7 @@ export function executeProcedure<T>(query: string, parameters: Record<string, un
   wshcmx.exception.throwIfNull(sqlInstance, "sqlInstance");
   sqlInstance.Init(wshcmx.connectionString);
 
-  const queryResult = sqlInstance.ExecuteProcedure(query, EncodeJson(parameters)) as wshcmxnet.Net.KeyValuePair<string, unknown>[][];
+  const queryResult = sqlInstance.ExecuteProcedure(query, EncodeJson(convertParameters(parameters))) as wshcmxnet.Net.KeyValuePair<string, unknown>[][];
 
   let pairs;
   let i;
@@ -129,4 +114,44 @@ export function executeQuery<T>(query: string) {
   }
 
   return result;
+}
+
+export function number(v: unknown) {
+  const real = OptReal(v, "NULL");
+  const int = OptInt(v, "NULL");
+
+  if (real !== int) {
+    return real;
+  }
+
+  return int;
+}
+
+export function string(v: unknown) {
+  return SqlLiteral(tools_web.convert_xss(String(v)));
+}
+
+function convertParameters(parameters: Record<string, unknown> = {}) {
+  const keys = wshcmx.object.keys(parameters);
+  let parameter;
+
+  for (let i = 0; i < keys.length; i++) {
+    parameter = parameters.GetOptProperty(keys[i]);
+
+    if (wshcmx.type.isString(parameter) && parameter == "NULL") {
+      parameters.SetProperty(keys[i], "NULL");
+    } else if (wshcmx.type.isNumber(parameter)) {
+      parameters.SetProperty(keys[i], number(parameter));
+    } else if (wshcmx.type.isArray(parameter)) {
+      if (parameter.length === 0) {
+        parameters.SetProperty(keys[i], "NULL");
+      } else {
+        parameters.SetProperty(keys[i], SqlLiteral(parameter.join(", ")))
+      }
+    } else {
+      parameters.SetProperty(keys[i], SqlLiteral(parameter as string | number | Date | null));
+    }
+  }
+
+  return parameters;
 }
