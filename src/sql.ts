@@ -8,24 +8,6 @@ type PaginationProcedureOptions = {
   orderby?: string;
 };
 
-function array(v: unknown[]) {
-  return v.length === 0 ? "NULL" : SqlLiteral(v.join(", "));
-}
-
-export function boolean(v: unknown) {
-  return tools_web.is_true(v) ? 1 : 0;
-}
-
-export function date(v: unknown) {
-  v = OptDate(v);
-
-  if (v === undefined) {
-    return "NULL";
-  }
-
-  return SqlLiteral(v);
-}
-
 export function executeNonQuery(query: string) {
   wshcmx.exception.throwIfUndefined(wshcmx.net, "wshcmx.net");
   const sqlInstance = wshcmx.net.CreateClassObject<wshcmxnet.Net.Sql>("wshcmx.Net.Sql");
@@ -137,14 +119,6 @@ export function number(v: unknown) {
   return int;
 }
 
-export function string(v: unknown) {
-  if (v === "NULL") {
-    return "NULL";
-  }
-
-  return SqlLiteral(tools_web.convert_xss(String(v)));
-}
-
 function convertParameters(parameters: Record<string, unknown> = {}) {
   const keys = wshcmx.object.keys(parameters);
   const result: Record<string, unknown> = {};
@@ -157,13 +131,13 @@ function convertParameters(parameters: Record<string, unknown> = {}) {
     if (wshcmx.type.isNumber(parameter)) {
       value = number(parameter);
     } else if (wshcmx.type.isArray(parameter)) {
-      value = array(parameter);
+      value = parameter.length === 0 ? null : parameter.join(", ");
     } else if (wshcmx.type.isBoolean(parameter)) {
-      value = boolean(parameter);
+      value = tools_web.is_true(parameter) ? 1 : 0;
     } else if (wshcmx.type.isDate(parameter)) {
-      value = date(parameter);
+      value = StrLeftCharRange(StrXmlDate(parameter), 19);
     } else if (wshcmx.type.isString(parameter)) {
-      value = string(parameter);
+      value = parameter;
     } else {
       value = null;
     }
