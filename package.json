@@ -18,5 +18,6 @@
     "@wshcmx/cli": "^3.0.0",
     "@wshcmx/types": "^12.1.0",
     "typescript": "^6.0.3"
-  }
+  },
+  "packageManager": "pnpm@12.16.1"
 }
