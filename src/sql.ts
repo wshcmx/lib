@@ -8,12 +8,22 @@ type PaginationProcedureOptions = {
   orderby?: string;
 };
 
+function array(v: unknown[]) {
+  return v.length === 0 ? "NULL" : SqlLiteral(v.join(", "));
+}
+
 export function boolean(v: unknown) {
   return tools_web.is_true(v) ? 1 : 0;
 }
 
 export function date(v: unknown) {
-  return SqlLiteral(OptDate(v, "NULL"));
+  v = OptDate(v);
+
+  if (v === undefined) {
+    return "NULL";
+  }
+
+  return SqlLiteral(v);
 }
 
 export function executeNonQuery(query: string) {
@@ -128,30 +138,38 @@ export function number(v: unknown) {
 }
 
 export function string(v: unknown) {
+  if (v === "NULL") {
+    return "NULL";
+  }
+
   return SqlLiteral(tools_web.convert_xss(String(v)));
 }
 
 function convertParameters(parameters: Record<string, unknown> = {}) {
   const keys = wshcmx.object.keys(parameters);
+  const result: Record<string, unknown> = {};
   let parameter;
+  let value;
 
   for (let i = 0; i < keys.length; i++) {
     parameter = parameters.GetOptProperty(keys[i]);
 
-    if (wshcmx.type.isString(parameter) && parameter == "NULL") {
-      parameters.SetProperty(keys[i], "NULL");
-    } else if (wshcmx.type.isNumber(parameter)) {
-      parameters.SetProperty(keys[i], number(parameter));
+    if (wshcmx.type.isNumber(parameter)) {
+      value = number(parameter);
     } else if (wshcmx.type.isArray(parameter)) {
-      if (parameter.length === 0) {
-        parameters.SetProperty(keys[i], "NULL");
-      } else {
-        parameters.SetProperty(keys[i], SqlLiteral(parameter.join(", ")))
-      }
+      value = array(parameter);
+    } else if (wshcmx.type.isBoolean(parameter)) {
+      value = boolean(parameter);
+    } else if (wshcmx.type.isDate(parameter)) {
+      value = date(parameter);
+    } else if (wshcmx.type.isString(parameter)) {
+      value = string(parameter);
     } else {
-      parameters.SetProperty(keys[i], SqlLiteral(parameter as string | number | Date | null));
+      value = null;
     }
+
+    result.SetProperty(keys[i], value === "NULL" ? null : value);
   }
 
-  return parameters;
+  return result;
 }
