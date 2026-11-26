@@ -17,7 +17,6 @@ const CACHE_PATH = resolve(PROJECT_ROOT_PATH, '.cache');
 const STATIC_FILES = [
     "LICENSE",
     "package.json",
-    "package-lock.json",
     "src/index.xml"
 ];
 
