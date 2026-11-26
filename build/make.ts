@@ -67,24 +67,38 @@ async function downloadLatestWshcmxVersion() {
     }
 
     console.log("📦 Finding the latest wshcmx/net package from GitHub...");
-    const latestRelease = await (await fetch("https://api.github.com/repos/wshcmx/net/releases/latest")).json();
+    const releaseResponse = await fetch("https://api.github.com/repos/wshcmx/net/releases/latest", {
+        headers: process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}
+    });
 
-    if (!latestRelease) {
-        throw new Error("❌ Could not fetch the latest release. Please ensure you have the latest version of wshcmx installed.");
+    if (!releaseResponse.ok) {
+        throw new Error(`❌ Could not fetch the latest wshcmx/net release (HTTP ${releaseResponse.status} ${releaseResponse.statusText}).`);
+    }
+
+    const latestRelease: { tag_name?: string; assets?: { name?: string; browser_download_url?: string }[] } | null = await releaseResponse.json();
+
+    if (!latestRelease || typeof latestRelease.tag_name !== "string" || !latestRelease.tag_name || !Array.isArray(latestRelease.assets)) {
+        throw new Error("❌ GitHub returned an invalid wshcmx/net release: missing tag or assets.");
     }
 
     const { assets } = latestRelease;
-    const releaseAsset = assets.find((asset: { name?: string }) => /\.(tar\.gz|tgz|tar|zip)$/i.test(asset.name ?? "")) ?? assets[0];
+    const releaseAsset = assets.find((asset) => /\.(tar\.gz|tgz|tar|zip)$/i.test(asset?.name ?? "")) ?? assets[0];
 
     if (!releaseAsset?.browser_download_url) {
         throw new Error("❌ Could not find a downloadable wshcmx/net package asset in the latest release.");
     }
 
     console.log(`📦 Fetching the ${latestRelease.tag_name} wshcmx/net package from GitHub...`);
-    const netPackage = await (await fetch(releaseAsset.browser_download_url)).arrayBuffer();
+    const assetResponse = await fetch(releaseAsset.browser_download_url);
 
-    if (!netPackage) {
-        throw new Error("❌ Could not fetch the latest wshcmx/net package. Please ensure you have the latest version of wshcmx installed.");
+    if (!assetResponse.ok) {
+        throw new Error(`❌ Could not fetch the wshcmx/net package (HTTP ${assetResponse.status} ${assetResponse.statusText}).`);
+    }
+
+    const netPackage = await assetResponse.arrayBuffer();
+
+    if (netPackage.byteLength === 0) {
+        throw new Error("❌ The downloaded wshcmx/net package is empty.");
     }
 
     const assetName = releaseAsset.name ?? `wshcmx-net-${latestRelease.tag_name}.tgz`;
